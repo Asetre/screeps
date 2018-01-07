@@ -1,11 +1,11 @@
-var sources = creep.room.find(FIND_SOURCES);
 var spawn1 = Game.spawns['Spawn1']
 
 spawn1.spawnCreep([WORK, CARRY, MOVE, MOVE])
 
 for(let name in Game.creeps) {
-
     let creep = Game.creeps[name]
+    var sources = creep.room.find(FIND_SOURCES);
+
     if(creep.harvest(sources[0]) == ERR_NOT_IN_RANGE) {
         creep.moveTo(sources[0]);
     }
