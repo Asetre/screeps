@@ -77,7 +77,6 @@ Harvesters.forEach((creep, index) => {
 })
 
 function harvestEnergy(creep, source) {
-    if(!creep.memory.work) creep.memory.work = 'harvest'
     if(creep.memory.job === 'harvest') {
         if(creep.carry.energy === creep.carryCapacity) creep.memory.job = 'transfer'
         if(creep.harvest(source) === ERR_NOT_IN_RANGE) {
