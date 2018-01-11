@@ -103,7 +103,7 @@ Controllers.forEach(function (creep) {
             creep.moveTo(sources[1]);
         }
     } else {
-        while (creep.carry.energy > 0) {
+        if (creep.carry.energy > 0) {
             if (creep.upgradeController(creep.room.controller, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                 creep.moveTo(creep.room.controller);
             }
