@@ -102,6 +102,7 @@ Builders.forEach(function (creep, index) {
                     creep.moveTo(sources[1]);
                 }
             } else {
+                if (creep.carry.energy === 0) creep.memory.work = 'harvest';
                 if (creep.build(constructionSite) === ERR_NOT_IN_RANGE) {
                     creep.moveTo(constructionSite);
                 }
