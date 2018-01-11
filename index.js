@@ -22,24 +22,22 @@ if(Controllers.length > 4 && site != undefined) {
 }
 
 Builders.forEach((creep, index) => {
-    if(creep.memory.job === 'builder') {
-        let constructionSite = creep.pos.findClosestByPath(FIND_CONSTRUCTION_SITES)
-        if(constructionSite != undefined) {
-            if(creep.memory.work === 'harvest') {
-                if(creep.carry.energy === creep.carryCapacity) creep.memory.work = 'build'
-                if(creep.harvest(sources[1]) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(sources[1]);
-                }
-            }else {
-                if(creep.carry.energy === 0) creep.memory.work = 'harvest'
-                if(creep.build(constructionSite) === ERR_NOT_IN_RANGE) {
-                    creep.moveTo(constructionSite)
-                }
+    let constructionSite = creep.pos.findClosestByPath(FIND_CONSTRUCTION_SITES)
+    if(constructionSite != undefined) {
+        if(creep.memory.work === 'harvest') {
+            if(creep.carry.energy === creep.carryCapacity) creep.memory.work = 'build'
+            if(creep.harvest(sources[1]) == ERR_NOT_IN_RANGE) {
+                creep.moveTo(sources[1]);
             }
         }else {
-            creep.memory.job = 'controller'
-            Builders.splice(index, 1)
+            if(creep.carry.energy === 0) creep.memory.work = 'harvest'
+            if(creep.build(constructionSite) === ERR_NOT_IN_RANGE) {
+                creep.moveTo(constructionSite)
+            }
         }
+    }else {
+        creep.memory.job = 'controller'
+        Builders.splice(index, 1)
     }
 })
 
@@ -83,7 +81,7 @@ function harvestEnergy(creep, source) {
 
 var alternate = 1
 
-if(spawn1.spawnCreep([MOVE, MOVE, WORK, CARRY, CARRY], genCreepName(), {dryRun: true})) {
+if(spawn1.energy === 300) {
     if(Harvesters.length < MinHarvesters) {
         spawn1.spawnCreep([MOVE, MOVE, WORK, CARRY, CARRY], genCreepName(), {memory: {job: 'harvester'}})
     }else {
