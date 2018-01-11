@@ -89,6 +89,11 @@ if (Controllers.length < 4 && Harvesters.length > 4) {
     changed.forEach(function (creep) {
         creep.memory.job = 'controller';
     });
+} else if (Harvesters.length > 8) {
+    var _changed = Harvesters.slice(0, 6);
+    _changed.forEach(function (creep) {
+        creep.memory.job = 'controller';
+    });
 }
 
 Controllers.forEach(function (creep) {
@@ -98,8 +103,10 @@ Controllers.forEach(function (creep) {
             creep.moveTo(sources[1]);
         }
     } else {
-        if (creep.upgradeController(creep.room.controller, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-            creep.moveTo(creep.room.controller);
+        while (creep.carry.energy > 0) {
+            if (creep.upgradeController(creep.room.controller, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                creep.moveTo(creep.room.controller);
+            }
         }
     }
 });
