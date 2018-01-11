@@ -74,6 +74,8 @@ var spawn1 = Game.spawns['Spawn1'];
 var Creeps = [];
 var Harvesters = [];
 var Controllers = [];
+var Builders = [];
+var MinHarvesters = 5;
 
 for (var name in Game.creeps) {
     var creep = Game.creeps[name];
@@ -84,19 +86,22 @@ Creeps.forEach(function (creep) {
     if (creep.memory.job === 'harvester') Harvesters.push(creep);else if (creep.memory.job === 'controller') Controllers.push(creep);
 });
 
-if (Controllers.length < 4 && Harvesters.length > 4) {
-    var changed = Harvesters.slice(0, 3);
-    changed.forEach(function (creep) {
-        creep.memory.job = 'controller';
-        creep.memory.work = 'harvest';
-    });
-} else if (Harvesters.length > 8) {
-    var _changed = Harvesters.slice(0, 6);
-    _changed.forEach(function (creep) {
-        creep.memory.job = 'controller';
-        creep.memory.work = 'harvest';
-    });
+var site = Room.find(FIND_CONSTRUCTION_SITES);
+
+if (Controllers.length > 4 && site != undefined) {
+    Builders = Controllers.splice(0, 3);
 }
+
+Builders.forEach(function (creep) {
+    var constructionSite = creep.pos.findClosestByPath(FIND_CONSTRUCTION_SITES);
+    if (constructionSite != undefined) {
+        if (creep.build(constructionSite) === ERR_NOT_IN_RANGE) {
+            creep.moveTo(constructionSite);
+        }
+    } else {
+        creep.memory.job = 'controller';
+    }
+});
 
 Controllers.forEach(function (creep) {
     var sources = creep.room.find(FIND_SOURCES);
@@ -138,13 +143,12 @@ function harvestEnergy(creep, source) {
 
 var alternate = 1;
 
-if (spawn1.spawnCreep([MOVE, MOVE, WORK, CARRY, CARRY], genCreepName(), { memory: { job: 'harvester', dryRun: true } })) {
-    if (alternate % 2 == 0) {
+if (spawn1.spawnCreep([MOVE, MOVE, WORK, CARRY, CARRY], genCreepName(), { dryRun: true })) {
+    if (Harvesters.length < MinHarvesters) {
         spawn1.spawnCreep([MOVE, MOVE, WORK, CARRY, CARRY], genCreepName(), { memory: { job: 'harvester' } });
     } else {
         spawn1.spawnCreep([MOVE, MOVE, WORK, CARRY, CARRY], genCreepName(), { memory: { job: 'controller', work: 'harvest' } });
     }
-    alternate = alternate % 2 === 0 ? 1 : 2;
 }
 
 function genCreepName() {
