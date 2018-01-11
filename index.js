@@ -27,9 +27,10 @@ if(Controllers.length < 4 && Harvesters.length > 4) {
     })
 }
 
-
 Controllers.forEach(creep => {
     var sources = creep.room.find(FIND_SOURCES);
+    if(!creep.memory.work && creep.carry.energy === 0) creep.memory.work = 'harvest'
+
     if(creep.memory.work === 'harvest') {
         if(creep.carry.energy === creep.carryCapacity) creep.memory.work = 'upgrade'
         if(creep.harvest(sources[1]) == ERR_NOT_IN_RANGE) {
