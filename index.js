@@ -93,9 +93,9 @@ var alternate = 1
 
 if(spawn1.energy === 300) {
     if(Harvesters.length < MinHarvesters) {
-        spawn1.spawnCreep([MOVE, MOVE, WORK, WORK, CARRY], genCreepName(), {memory: {job: 'harvester', work: 'harvest'}})
+        spawn1.spawnCreep([MOVE, WORK, WORK, CARRY], genCreepName(), {memory: {job: 'harvester', work: 'harvest'}})
     }else {
-        spawn1.spawnCreep([MOVE, MOVE, WORK, WORK, CARRY], genCreepName(), {memory: {job: 'controller', work: 'harvest'}})
+        spawn1.spawnCreep([MOVE, WORK, WORK, CARRY], genCreepName(), {memory: {job: 'controller', work: 'harvest'}})
     }
 }
 
