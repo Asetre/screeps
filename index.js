@@ -18,6 +18,11 @@ if(Controllers.length < 4 && Harvesters.length > 4) {
     changed.forEach(creep => {
         creep.memory.job = 'controller'
     })
+}else if(Harvesters.length > 8) {
+    let changed = Harvesters.slice(0, 6)
+    changed.forEach(creep => {
+        creep.memory.job = 'controller'
+    })
 }
 
 
