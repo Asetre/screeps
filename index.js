@@ -11,19 +11,25 @@ for(let name in Game.creeps) {
 }
 
 Creeps.forEach(creep => {
+    Builders.push(creep)
+    /*
     if(creep.memory.job === 'harvester') Harvesters.push(creep)
     else if(creep.memory.job === 'controller') Controllers.push(creep)
+    */
 })
 
+/*
 var site = Creeps[0].pos.findClosestByPath(FIND_CONSTRUCTION_SITES)
 
 if(Controllers.length > 4 && site != undefined) {
     Builders = Controllers.splice(0, 3)
 }
+*/
 
 Builders.forEach((creep, index) => {
     let constructionSite = creep.pos.findClosestByPath(FIND_CONSTRUCTION_SITES)
     var sources = creep.room.find(FIND_SOURCES);
+    if(!creep.memory.work) creep.memory.work = 'build'
     if(constructionSite != undefined) {
         if(creep.memory.work === 'harvest') {
             if(creep.carry.energy === creep.carryCapacity) creep.memory.work = 'build'
