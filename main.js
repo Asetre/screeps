@@ -92,14 +92,24 @@ if (Controllers.length > 4 && site != undefined) {
     Builders = Controllers.splice(0, 3);
 }
 
-Builders.forEach(function (creep) {
-    var constructionSite = creep.pos.findClosestByPath(FIND_CONSTRUCTION_SITES);
-    if (constructionSite != undefined) {
-        if (creep.build(constructionSite) === ERR_NOT_IN_RANGE) {
-            creep.moveTo(constructionSite);
+Builders.forEach(function (creep, index) {
+    if (creep.memory.job === 'builder') {
+        var constructionSite = creep.pos.findClosestByPath(FIND_CONSTRUCTION_SITES);
+        if (constructionSite != undefined) {
+            if (creep.memory.work === 'harvest') {
+                if (creep.carry.energy === creep.carryCapacity) creep.memory.work = 'build';
+                if (creep.harvest(sources[1]) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(sources[1]);
+                }
+            } else {
+                if (creep.build(constructionSite) === ERR_NOT_IN_RANGE) {
+                    creep.moveTo(constructionSite);
+                }
+            }
+        } else {
+            creep.memory.job = 'controller';
+            Builders.splice(index, 1);
         }
-    } else {
-        creep.memory.job = 'controller';
     }
 });
 

@@ -5,7 +5,8 @@
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack"
+    "build": "webpack",
+    "update": "npm run build && git add . && git commit -m 'updates' && git push "
   },
   "repository": {
     "type": "git",
