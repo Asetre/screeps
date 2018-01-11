@@ -92,6 +92,13 @@ if (Controllers.length > 4 && site != undefined) {
     Builders = Controllers.splice(0, 3);
 }
 
+var isThereSite = Creeps[0].pos.findClosestByPath(FIND_CONSTRUCTION_SITES);
+
+if (isThereSite && Builders.length === 0) {
+    Builders = Controllers.slice(0, 2);
+    Controllers = Controllers.slice(2, 0);
+}
+
 Builders.forEach(function (creep, index) {
     var constructionSite = creep.pos.findClosestByPath(FIND_CONSTRUCTION_SITES);
     var sources = creep.room.find(FIND_SOURCES);
@@ -109,6 +116,7 @@ Builders.forEach(function (creep, index) {
         }
     } else {
         creep.memory.job = 'controller';
+        creep.memory.work = 'upgrade';
         Builders.splice(index, 1);
     }
 });

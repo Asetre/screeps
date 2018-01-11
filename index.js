@@ -21,6 +21,13 @@ if(Controllers.length > 4 && site != undefined) {
     Builders = Controllers.splice(0, 3)
 }
 
+let isThereSite = Creeps[0].pos.findClosestByPath(FIND_CONSTRUCTION_SITES)
+
+if(isThereSite && Builders.length === 0) {
+    Builders = Controllers.slice(0, 2)
+    Controllers = Controllers.slice(2, 0)
+}
+
 Builders.forEach((creep, index) => {
     let constructionSite = creep.pos.findClosestByPath(FIND_CONSTRUCTION_SITES)
     var sources = creep.room.find(FIND_SOURCES);
@@ -38,6 +45,7 @@ Builders.forEach((creep, index) => {
         }
     }else {
         creep.memory.job = 'controller'
+        creep.memory.work = 'upgrade'
         Builders.splice(index, 1)
     }
 })
