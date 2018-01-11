@@ -69,6 +69,7 @@ Harvesters.forEach((creep, index) => {
 })
 
 function harvestEnergy(creep, source) {
+    if(!creep.memory.work) creep.memory.work = 'harvest'
     if(creep.memory.job === 'harvest') {
         if(creep.carry.energy === creep.carryCapacity) creep.memory.job = 'transfer'
         if(creep.harvest(source) === ERR_NOT_IN_RANGE) {
@@ -86,7 +87,7 @@ var alternate = 1
 
 if(spawn1.energy === 300) {
     if(Harvesters.length < MinHarvesters) {
-        spawn1.spawnCreep([MOVE, MOVE, WORK, CARRY, CARRY], genCreepName(), {memory: {job: 'harvester'}})
+        spawn1.spawnCreep([MOVE, MOVE, WORK, CARRY, CARRY], genCreepName(), {memory: {job: 'harvester', work: 'harvest'}})
     }else {
         spawn1.spawnCreep([MOVE, MOVE, WORK, CARRY, CARRY], genCreepName(), {memory: {job: 'controller', work: 'harvest'}})
     }
