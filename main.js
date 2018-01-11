@@ -94,11 +94,12 @@ if (Controllers.length > 4 && site != undefined) {
 
 Builders.forEach(function (creep, index) {
     var constructionSite = creep.pos.findClosestByPath(FIND_CONSTRUCTION_SITES);
+    var sources = creep.room.find(FIND_SOURCES);
     if (constructionSite != undefined) {
         if (creep.memory.work === 'harvest') {
             if (creep.carry.energy === creep.carryCapacity) creep.memory.work = 'build';
-            if (creep.harvest(sources[1]) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(sources[1]);
+            if (creep.harvest(sources[0]) == ERR_NOT_IN_RANGE) {
+                creep.moveTo(sources[0]);
             }
         } else {
             if (creep.carry.energy === 0) creep.memory.work = 'harvest';
