@@ -88,22 +88,25 @@ if (Controllers.length < 4 && Harvesters.length > 4) {
     var changed = Harvesters.slice(0, 3);
     changed.forEach(function (creep) {
         creep.memory.job = 'controller';
+        creep.memory.work = 'harvest';
     });
 } else if (Harvesters.length > 8) {
     var _changed = Harvesters.slice(0, 6);
     _changed.forEach(function (creep) {
         creep.memory.job = 'controller';
+        creep.memory.work = 'harvest';
     });
 }
 
 Controllers.forEach(function (creep) {
     var sources = creep.room.find(FIND_SOURCES);
-    if (creep.carry.energy < creep.carryCapacity && creep.upgradeController(creep.room.controller, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+    if (creep.memory.work === 'harvest') {
+        if (creep.carry.energy === creep.carryCapacity) creep.memory.work = 'upgrade';
         if (creep.harvest(sources[1]) == ERR_NOT_IN_RANGE) {
             creep.moveTo(sources[1]);
         }
     } else {
-        if (creep.carry.enery === 0) return moveTo(sources[1]);
+        if (creep.carry.enery === 0) creep.memory.work = 'harvest';
         if (creep.upgradeController(creep.room.controller, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
             creep.moveTo(creep.room.controller);
         }
@@ -133,11 +136,11 @@ function harvestEnergy(creep, source) {
 
 var alternate = 1;
 
-if (spawn1.spawnCreep([MOVE, MOVE, WORK, CARRY], genCreepName(), { memory: { job: 'harvester', dryRun: true } })) {
+if (spawn1.spawnCreep([MOVE, MOVE, WORK, CARRY, CARRY], genCreepName(), { memory: { job: 'harvester', dryRun: true } })) {
     if (alternate % 2 == 0) {
-        spawn1.spawnCreep([MOVE, MOVE, WORK, CARRY], genCreepName(), { memory: { job: 'harvester' } });
+        spawn1.spawnCreep([MOVE, MOVE, WORK, CARRY, CARRY], genCreepName(), { memory: { job: 'harvester' } });
     } else {
-        spawn1.spawnCreep([MOVE, MOVE, WORK, CARRY], genCreepName(), { memory: { job: 'controller' } });
+        spawn1.spawnCreep([MOVE, MOVE, WORK, CARRY, CARRY], genCreepName(), { memory: { job: 'controller', work: 'harvest' } });
     }
     alternate = alternate % 2 === 0 ? 1 : 2;
 }
