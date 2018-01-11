@@ -72,15 +72,22 @@
 
 var spawn1 = Game.spawns['Spawn1'];
 var Creeps = [];
-var i = 2;
 
-if (spawn1.spawnCreep([MOVE, MOVE, WORK, CARRY], 'test' + i, { memory: { job: 'harvester', dryRun: true } })) {
+function genCreepName() {
+    var text = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+    for (var i = 0; i < 5; i++) {
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+    }return text;
+}
+
+if (spawn1.spawnCreep([MOVE, MOVE, WORK, CARRY], genCreepName(), { memory: { job: 'harvester', dryRun: true } })) {
     if (i % 2 == 0) {
-        spawn1.spawnCreep([MOVE, MOVE, WORK, CARRY], 'Worker' + i, { memory: { job: 'harvester' } });
+        spawn1.spawnCreep([MOVE, MOVE, WORK, CARRY], genCreepName(), { memory: { job: 'harvester' } });
     } else {
-        spawn1.spawnCreep([MOVE, MOVE, WORK, CARRY], 'Controller' + i, { memory: { job: 'controller' } });
+        spawn1.spawnCreep([MOVE, MOVE, WORK, CARRY], genCreepName(), { memory: { job: 'controller' } });
     }
-    i++;
 }
 
 for (var name in Game.creeps) {
