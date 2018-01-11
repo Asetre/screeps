@@ -69,7 +69,7 @@ if(spawn1.spawnCreep([MOVE, MOVE, WORK, CARRY], genCreepName(), {memory: {job: '
     }else {
         spawn1.spawnCreep([MOVE, MOVE, WORK, CARRY], genCreepName(), {memory: {job: 'controller'}})
     }
-    alternamte = alternate % 2 === 0 ? 1 : 2
+    alternate = alternate % 2 === 0 ? 1 : 2
 }
 
 function genCreepName() {
