@@ -4,17 +4,24 @@ var Harvesters = []
 var Controllers = []
 
 for(let name in Game.creeps) {
-    Creeps.push(name)
+    let creep = Game.creeps[name]
+    Creeps.push(creep)
 }
 
-Creeps.forEach(name => {
-    let creep = Game.creeps[name]
-    if(creep.memory.job === 'harvester') Harvesters.push(name)
-    else if(creep.memory.job === 'controller') Controllers.push(name)
+Creeps.forEach(creep => {
+    if(creep.memory.job === 'harvester') Harvesters.push(creep)
+    else if(creep.memory.job === 'controller') Controllers.push(creep)
 })
 
-Controllers.forEach(name => {
-    let creep = Game.creeps[name]
+if(Controllers.length < 4 && Harvesters.length > 4) {
+    let changed = Harvesters.slice(0, 3)
+    changed.forEach(creep => {
+        creep.memory.job = 'controller'
+    })
+}
+
+
+Controllers.forEach(creep => {
     if(creep.carry.energy < creep.carryCapacity) {
         var sources = creep.room.find(FIND_SOURCES);
         if(creep.harvest(sources[1]) == ERR_NOT_IN_RANGE) {
@@ -27,8 +34,7 @@ Controllers.forEach(name => {
     }
 })
 
-Harvesters.forEach((name, index) => {
-    let creep = Game.creeps[name]
+Harvesters.forEach((creep, index) => {
     let sources = creep.room.find(FIND_SOURCES)
     if(index % 2 === 0) {
         harvestEnergy(creep, sources[0])
@@ -49,8 +55,6 @@ function harvestEnergy(creep, source) {
     }
 }
 
-
-
 if(spawn1.spawnCreep([MOVE, MOVE, WORK, CARRY], genCreepName(), {memory: {job: 'harvester', dryRun: true}})) {
     if(i % 2 == 0) {
         spawn1.spawnCreep([MOVE, MOVE, WORK, CARRY], genCreepName(), {memory: {job: 'harvester'}})
@@ -58,42 +62,6 @@ if(spawn1.spawnCreep([MOVE, MOVE, WORK, CARRY], genCreepName(), {memory: {job: '
         spawn1.spawnCreep([MOVE, MOVE, WORK, CARRY], genCreepName(), {memory: {job: 'controller'}})
     }
 }
-
-/*
-for(let name in Game.creeps) {
-    let creep = Game.creeps[name]
-    var sources = creep.room.find(FIND_SOURCES);
-
-    if(creep.memory.job === 'harvester') {
-        if(creep.harvest(sources[0]) == ERR_NOT_IN_RANGE) {
-            creep.moveTo(sources[0]);
-        }
-
-        if(creep.carry.energy < creep.carryCapacity) {
-            var sources = creep.room.find(FIND_SOURCES);
-            if(creep.harvest(sources[0]) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(sources[0]);
-            }
-        }
-        else {
-            if( creep.transfer(Game.spawns['Spawn1'], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE ) {
-                creep.moveTo(Game.spawns['Spawn1']);
-            }
-        }
-    }else if(creep.memory.job === 'controller') {
-        if(creep.carry.energy < creep.carryCapacity) {
-            var sources = creep.room.find(FIND_SOURCES);
-            if(creep.harvest(sources[1]) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(sources[1]);
-            }
-        }else {
-            if(creep.upgradeController(creep.room.controller, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(creep.room.controller)
-            }
-        }
-    }
-}
-*/
 
 function genCreepName() {
     var text = "";
