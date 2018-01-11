@@ -131,12 +131,15 @@ function harvestEnergy(creep, source) {
     }
 }
 
+var alternate = 1;
+
 if (spawn1.spawnCreep([MOVE, MOVE, WORK, CARRY], genCreepName(), { memory: { job: 'harvester', dryRun: true } })) {
-    if (i % 2 == 0) {
+    if (alternate % 2 == 0) {
         spawn1.spawnCreep([MOVE, MOVE, WORK, CARRY], genCreepName(), { memory: { job: 'harvester' } });
     } else {
         spawn1.spawnCreep([MOVE, MOVE, WORK, CARRY], genCreepName(), { memory: { job: 'controller' } });
     }
+    alternamte = alternate % 2 === 0 ? 1 : 2;
 }
 
 function genCreepName() {
