@@ -92,6 +92,10 @@ if (isSite && Builders.length === 0 && Controllers.length > 3) {
     Controllers[0].memory.job = 'builder';
     Controllers[1].memory.job = 'builder';
     Controllers[2].memory.job = 'builder';
+} else if (!isSite && Builders.length === 3) {
+    Builders[0].memory.job = 'controller';
+    Builders[1].memory.job = 'controller';
+    Builders[2].memory.job = 'controller';
 }
 
 Builders.forEach(function (creep, index) {
