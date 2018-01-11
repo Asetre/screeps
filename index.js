@@ -27,12 +27,13 @@ if(Controllers.length < 4 && Harvesters.length > 4) {
 
 
 Controllers.forEach(creep => {
+    var sources = creep.room.find(FIND_SOURCES);
     if(creep.carry.energy < creep.carryCapacity && (creep.upgradeController(creep.room.controller, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE)) {
-        var sources = creep.room.find(FIND_SOURCES);
         if(creep.harvest(sources[1]) == ERR_NOT_IN_RANGE) {
             creep.moveTo(sources[1]);
         }
     }else {
+        if(creep.carry.enery === 0) return moveTo(sources[1])
         if(creep.upgradeController(creep.room.controller, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
             creep.moveTo(creep.room.controller)
         }
