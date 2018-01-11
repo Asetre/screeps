@@ -16,7 +16,7 @@ Creeps.forEach(creep => {
     else if(creep.memory.job === 'builder') Builders.push(creep)
 })
 
-var isSite = Game.creeps[0].pos.findClosestByPath(FIND_CONSTRUCTION_SITES)
+var isSite = Creeps[0].pos.findClosestByPath(FIND_CONSTRUCTION_SITES)
 
 if(isSite && Builders.length === 0 && Controllers.length > 3) {
     Controllers[0].memory.job = 'builder'
