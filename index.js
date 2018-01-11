@@ -13,19 +13,15 @@ for(let name in Game.creeps) {
 Creeps.forEach(creep => {
     if(creep.memory.job === 'harvester') Harvesters.push(creep)
     else if(creep.memory.job === 'controller') Controllers.push(creep)
+    else if(creep.memory.job === 'builder') Builders.push(creep)
 })
 
-var site = Creeps[0].pos.findClosestByPath(FIND_CONSTRUCTION_SITES)
+var isSite = Game.creeps[0].pos.findClosestByPath(FIND_CONSTRUCTION_SITES)
 
-if(Controllers.length > 4 && site != undefined) {
-    Builders = Controllers.splice(0, 3)
-}
-
-let isThereSite = Creeps[0].pos.findClosestByPath(FIND_CONSTRUCTION_SITES)
-
-if(isThereSite && Builders.length === 0) {
-    Builders = Controllers.slice(0, 2)
-    Controllers = Controllers.slice(2, 0)
+if(isSite && Builders.length === 0 && Controllers.length > 3) {
+    Controllers[0].memory.job = 'builder'
+    Controllers[1].memory.job = 'builder'
+    Controllers[2].memory.job = 'builder'
 }
 
 Builders.forEach((creep, index) => {
@@ -46,7 +42,6 @@ Builders.forEach((creep, index) => {
     }else {
         creep.memory.job = 'controller'
         creep.memory.work = 'upgrade'
-        Builders.splice(index, 1)
     }
 })
 
