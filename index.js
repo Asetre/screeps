@@ -15,7 +15,7 @@ Creeps.forEach(creep => {
     else if(creep.memory.job === 'controller') Controllers.push(creep)
 })
 
-var site = Game.creeps[Creeps[0]].pos.findClosestByPath(FIND_CONSTRUCTION_SITES)
+var site = Creeps[0].pos.findClosestByPath(FIND_CONSTRUCTION_SITES)
 
 if(Controllers.length > 4 && site != undefined) {
     Builders = Controllers.splice(0, 3)
